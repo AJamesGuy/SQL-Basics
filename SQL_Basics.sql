@@ -41,4 +41,9 @@ ORDER BY comment_count DESC
 LIMIT 1;
 
 
+-- 6. How many different user IDs have posted content?
+-- Type: Counting distinct values
 
+SELECT u.id, COUNT(*)
+FROM users u
+JOIN 
