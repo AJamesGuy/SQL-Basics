@@ -44,6 +44,37 @@ LIMIT 1;
 -- 6. How many different user IDs have posted content?
 -- Type: Counting distinct values
 
-SELECT u.id, COUNT(*)
+SELECT COUNT(DISTINCT user_id) as posting_users
+FROM posts;
+
+-- 7. What user has the most people following them? (return the user_id)
+-- Type: Aggregation, grouping, ordering, limiting.
+SELECT u.id as user_id, u.username, COUNT(*) as follower_count
+FROM following f
+JOIN users u ON f.followed_id = u.id
+GROUP BY f.followed_id, u.id, u.username
+ORDER BY follower_count DESC
+LIMIT 1;
+
+-- 8. From users who joined in February 2023, how many have usernames containing 'john'?
+-- Type: Counting, filtering by date and string pattern
+SELECT u.username, u.created_at, COUNT(*) as contains_john
 FROM users u
-JOIN 
+WHERE u.created_at BETWEEN '2023-02-01' AND '2023-02-28' AND u.username LIKE '%john%'
+GROUP BY u.username;
+
+-- 9. From users who joined in March 2023, how many have usernames containing 'mar'?
+-- Type: Counting, filtering by date and string pattern.
+SELECT u.username, u.created_at, COUNT(*) as users_containing_mar
+FROM users u
+WHERE u.created_at 
+BETWEEN '2023-03-01' AND '2023-03-31' 
+AND u.username LIKE '%mar%';
+
+-- 10. What post has the most reactions? (return the post_id)
+-- Type: Aggregation, grouping, ordering, limiting.
+SELECT post_id, COUNT(*) as reaction_count
+FROM reactions
+GROUP BY post_id
+ORDER BY reaction_count DESC
+LIMIT 1;
